@@ -95,7 +95,7 @@ hardserver.get('/api/project/:id', (wreck, rezz) => {
     //     rezz.status(500).json(err)
     // })
 
-
+    // I'm sure knowing how to program a fuction to do this shit would help
 })
 
 
