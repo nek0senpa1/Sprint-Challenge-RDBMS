@@ -64,25 +64,26 @@ hardserver.post('/api/action', (rec, rez) =>{
 
 // now for the one I don't know how to do, and was never taught in JS...
 
-hardserver.get('/api/project/:id', (wreck, rezz) => {
-    const randomIDisRandom = wreck.params.id;
-
+hardserver.get('/api/project/:id', (req, res) => {
+    const id = req.params.id;
     deebee('project')
-    .where({id: randomIDisRandom})
-    .first()
-    .then( stuff => {
-        return deebee('actions')
-        .where({project_id: randomIDisRandom})
-        .then( morestuff => {
-            rezz.status(200).json(morestuff)
+        .first()
+        .where({ id })
+        .then(project => {
+            return deebee('action')
+                .where({ 'project_id': id })
+                .then(bullshit => {
+                    project.bullshit = bullshit;
+                    
+                    res.status(200).json(project)
+                })
+                .catch(err =>{
+                    rez.status(500).json(err)
+                })
         })
         .catch(err =>{
-            rezz.status(500).json(err)
+            rez.status(500).json(err)
         })
-    })
-    .catch(err =>{
-        rezz.status(500).json(err)
-    })
 })
     // deebee('action')
     // .where({project_id: wreck.params.id})
@@ -95,7 +96,15 @@ hardserver.get('/api/project/:id', (wreck, rezz) => {
 
     // I'm sure knowing how to program a fuction to do this shit would help
 
-    
+    // went and found some code... it works... would have been nice to have
+    // gone over something like this at some point during the week...
+
+    // It's always nice to cry during a sprint challenge because you have
+    // never gone over or seen shit like this before...
+
+    // I don't really understand why this works... and would like to see
+    // another way to do this... or understand this one better...
+
 
 
 module.exports = hardserver;
