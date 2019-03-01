@@ -65,25 +65,37 @@ hardserver.post('/api/action', (rec, rez) =>{
 // now for the one I don't know how to do, and was never taught in JS...
 
 hardserver.get('/api/project/:id', (wreck, rezz) => {
-    // deebee('project')
-    // .where({id: wreck.params.id})
-    // .first()
-    // .then( stuff => {
-    //     rezz.send(stuff)
+    deebee('project')
+    .where({id: wreck.params.id})
+    .first()
+    .then( stuff => {
+        rezz.send(stuff)
+        deebee('action')
+            .where({project_id: wreck.params.id})
+            .then(seeminglyrandomshit => {
+                rezz.status(200).json(seeminglyrandomshit);
+            })
+            .catch(err =>{
+                rezz.status(500).json(err)
+        })
+        
+    })
+    
+    .catch(err =>{
+        rezz.status(500).json(err)
+    })
+    
+    
+    // deebee('action')
+    // .where({project_id: wreck.params.id})
+    // .then(seeminglyrandomshit => {
+    //     rezz.status(200).json(seeminglyrandomshit);
     // })
     // .catch(err =>{
-    //     rez.status(500).json(err)
+    //     rezz.status(500).json(err)
     // })
-    
-    
-    deebee('action')
-    .where({project_id: wreck.params.id})
-    .then(seeminglyrandomshit => {
-        rezz.status(200).json(seeminglyrandomshit);
-    })
-    .catch(err =>{
-        rez.status(500).json(err)
-    })
+
+
 })
 
 
